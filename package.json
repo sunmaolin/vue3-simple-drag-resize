@@ -1,0 +1,68 @@
+{
+  "name": "vue3-simple-drag-resize",
+  "version": "1.0.0",
+  "description": "A lightweight Vue 3 component for draggable and resizable elements with collision detection",
+  "keywords": [
+    "collision",
+    "drag",
+    "draggable",
+    "resizable",
+    "resize",
+    "typescript",
+    "vue",
+    "vue3"
+  ],
+  "license": "MIT",
+  "author": "sunmaolin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunmaolin/vue3-simple-drag-resize.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/vue3-simple-drag-resize.umd.cjs",
+  "module": "./dist/vue3-simple-drag-resize.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/vue3-simple-drag-resize.js",
+      "require": "./dist/vue3-simple-drag-resize.umd.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "build:lib": "vite build",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "format": "oxfmt src/"
+  },
+  "dependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.12.0",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vue/tsconfig": "^0.9.1",
+    "npm-run-all2": "^8.0.4",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.60.0",
+    "typescript": "~6.0.0",
+    "vite": "^8.0.3",
+    "vite-plugin-dts": "^5.0.1",
+    "vite-plugin-vue-devtools": "^8.1.1",
+    "vue-tsc": "^3.2.6"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
