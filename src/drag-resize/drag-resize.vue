@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, useTemplateRef, watch, useId, onBeforeUnmount, watchEffect, inject } from 'vue'
-import type { DragResizeProps, Stick, InitDimension, DragLimitation, Rect } from './types'
+import type { DragResizeProps, Stick, InitDimension, DragLimitation, Rect, CollisionInfo } from './types'
 import type { DragResizeManager } from './manager'
 
 const COMPONENT_NAME = 'DragResize'
@@ -49,9 +49,9 @@ const emits = defineEmits({
   dragstop: (rect: Rect) => rect,
   resizing: (rect: Rect) => rect,
   resizestop: (rect: Rect) => rect,
+  collision: (collisionInfo: CollisionInfo) => collisionInfo,
   activated: () => true,
-  deactivated: () => true,
-  collision: () => true
+  deactivated: () => true
 })
 
 const maxWidth = ref(props.maxW ?? 0)
@@ -185,7 +185,7 @@ const bodyMove = (offset: { x: number; y: number }) => {
 
   const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
   if (collision) {
-    emits('collision')
+    emits('collision', collision)
     if (collision.boundary === 'left') {
       newLeft -= collision.overlap
       newRight += collision.overlap
@@ -261,7 +261,7 @@ const stickMove = (offset: { x: number; y: number }) => {
 
   const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
   if (collision) {
-    emits('collision')
+    emits('collision', collision)
     if (collision.boundary === 'left') {
       newRight += collision.overlap
     }
