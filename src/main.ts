@@ -3,7 +3,7 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import { createDragResize } from './components/drag-resize'
+import { createDragResize } from './drag-resize'
 
 const app = createApp(App)
 

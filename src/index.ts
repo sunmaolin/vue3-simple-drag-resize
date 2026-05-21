@@ -1,3 +1,3 @@
-export { createDragResize } from './components/drag-resize'
-export { default as DragResize } from './components/drag-resize/drag-resize.vue'
-export * from './components/drag-resize/types'
+export { createDragResize } from './drag-resize'
+export { default as DragResize } from './drag-resize/drag-resize.vue'
+export * from './drag-resize/types'

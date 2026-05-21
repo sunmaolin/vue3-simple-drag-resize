@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <DragResize :x="100" :y="50"> hello world </DragResize>
