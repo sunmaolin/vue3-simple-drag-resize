@@ -1,5 +1,5 @@
 import type { TemplateRef } from 'vue'
-import type { ClientRect } from './types.ts'
+import type { ClientRect, CollisionInfo } from './types.ts'
 
 export class DragResizeManager {
   private isCollision: boolean = false
@@ -36,13 +36,13 @@ export class DragResizeManager {
     return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom)
   }
 
-  willCollide(currentId: string, newRect: ClientRect): boolean {
-    if (!this.isCollision) return false
+  willCollide(currentId: string, newRect: ClientRect): CollisionInfo | null {
+    if (!this.isCollision) return null
     const currentComponent = this.getCurrentComponent(currentId)
-    if (!currentComponent?.value) return false
+    if (!currentComponent?.value) return null
 
     const parentRect = currentComponent.value.parentElement?.getBoundingClientRect()
-    if (!parentRect) return false
+    if (!parentRect) return null
 
     const newViewportRect: ClientRect = {
       left: parentRect.left + newRect.left,
@@ -56,9 +56,37 @@ export class DragResizeManager {
       if (!other.value) continue
       const otherRect = other.value.getBoundingClientRect()
       if (this.checkCollision(newViewportRect, otherRect)) {
-        return true
+        const overlapLeft = newViewportRect.right - otherRect.left;    
+        const overlapRight = otherRect.right - newViewportRect.left;   
+        const overlapTop = newViewportRect.bottom - otherRect.top;     
+        const overlapBottom = otherRect.bottom - newViewportRect.top;
+        const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+        if (minOverlap === overlapLeft) {
+          return {
+            boundary: 'left',
+            overlap: overlapLeft
+          }
+        }
+        if (minOverlap === overlapRight) {
+          return {
+            boundary: 'right',
+            overlap: overlapRight
+          }
+        }
+        if (minOverlap === overlapTop) {
+          return {
+            boundary: 'top',
+            overlap: overlapTop
+          }
+        }
+        if (minOverlap === overlapBottom) {
+          return {
+            boundary: 'bottom',
+            overlap: overlapBottom
+          }
+        }
       }
     }
-    return false
+    return null
   }
 }

@@ -183,9 +183,25 @@ const bodyMove = (offset: { x: number; y: number }) => {
 
   ;({ newLeft, newRight, newTop, newBottom } = rectCorrectionByLimits(newLeft, newRight, newTop, newBottom))
 
-  if (dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })) {
+  const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
+  if (collision) {
     emits('collision')
-    return
+    if (collision.boundary === 'left') {
+      newLeft -= collision.overlap
+      newRight += collision.overlap
+    }
+    if (collision.boundary === 'right') {
+      newLeft += collision.overlap
+      newRight -= collision.overlap
+    }
+    if (collision.boundary === 'top') {
+      newTop -= collision.overlap
+      newBottom += collision.overlap
+    }
+    if (collision.boundary === 'bottom') {
+      newTop += collision.overlap
+      newBottom -= collision.overlap
+    }
   }
 
   left.value = newLeft
@@ -243,9 +259,21 @@ const stickMove = (offset: { x: number; y: number }) => {
 
   ;({ newLeft, newRight, newTop, newBottom } = rectCorrectionByLimits(newLeft, newRight, newTop, newBottom))
 
-  if (dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })) {
+  const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
+  if (collision) {
     emits('collision')
-    return
+    if (collision.boundary === 'left') {
+      newRight += collision.overlap
+    }
+    if (collision.boundary === 'right') {
+      newLeft += collision.overlap
+    }
+    if (collision.boundary === 'top') {
+      newBottom += collision.overlap
+    }
+    if (collision.boundary === 'bottom') {
+      newTop += collision.overlap
+    }
   }
 
   left.value = newLeft

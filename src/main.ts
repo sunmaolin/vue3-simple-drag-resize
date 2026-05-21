@@ -8,7 +8,7 @@ import { createDragResize } from './drag-resize'
 const app = createApp(App)
 
 app.use(createDragResize(), {
-  isCollision: false
+  isCollision: true
 })
 
 app.mount('#app')
