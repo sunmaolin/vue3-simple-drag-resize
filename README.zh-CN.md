@@ -109,7 +109,7 @@ import { DragResize } from 'vue3-simple-drag-resize'
 | `resizestop`  | `Rect` | 缩放结束时触发     |
 | `activated`   | -      | 组件激活时触发     |
 | `deactivated` | -      | 组件失活时触发     |
-| `collision`   | -      | 组件发生碰撞时触发 |
+| `collision`   | `Collision` | 组件发生碰撞时触发 |
 
 ### Rect 类型
 
@@ -121,6 +121,18 @@ interface Rect {
   height: number
 }
 ```
+
+### Collision 类型
+
+```typescript
+interface Collision {
+  boundary: 'left' | 'right' | 'top' | 'bottom'
+  overlap: number
+}
+```
+
+- `boundary`: 碰撞发生的边界方向
+- `overlap`: 碰撞重叠量（像素）
 
 ## 碰撞检测
 

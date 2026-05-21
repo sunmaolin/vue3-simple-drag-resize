@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, useTemplateRef, watch, useId, onBeforeUnmount, watchEffect, inject } from 'vue'
-import type { DragResizeProps, Stick, InitDimension, DragLimitation, Rect, CollisionInfo } from './types'
+import type { DragResizeProps, Stick, InitDimension, DragLimitation, Rect, Collision } from './types'
 import type { DragResizeManager } from './manager'
 
 const COMPONENT_NAME = 'DragResize'
@@ -49,7 +49,7 @@ const emits = defineEmits({
   dragstop: (rect: Rect) => rect,
   resizing: (rect: Rect) => rect,
   resizestop: (rect: Rect) => rect,
-  collision: (collisionInfo: CollisionInfo) => collisionInfo,
+  collision: (collision: Collision) => collision,
   activated: () => true,
   deactivated: () => true
 })

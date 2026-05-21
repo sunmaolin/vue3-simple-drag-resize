@@ -1,5 +1,5 @@
 import type { TemplateRef } from 'vue'
-import type { ClientRect, CollisionInfo } from './types.ts'
+import type { ClientRect, Collision } from './types.ts'
 
 export class DragResizeManager {
   private isCollision: boolean = false
@@ -36,7 +36,7 @@ export class DragResizeManager {
     return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom)
   }
 
-  willCollide(currentId: string, newRect: ClientRect): CollisionInfo | null {
+  willCollide(currentId: string, newRect: ClientRect): Collision | null {
     if (!this.isCollision) return null
     const currentComponent = this.getCurrentComponent(currentId)
     if (!currentComponent?.value) return null

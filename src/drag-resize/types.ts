@@ -22,7 +22,7 @@ export type DragLimitation = {
   top: { min: number; max: number }
   bottom: { min: number; max: number }
 }
-export type CollisionInfo = {
+export type Collision = {
   boundary: 'left' | 'right' | 'top' | 'bottom'
   overlap: number
 } 

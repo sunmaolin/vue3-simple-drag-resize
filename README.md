@@ -109,7 +109,7 @@ import { DragResize } from 'vue3-simple-drag-resize'
 | `resizestop`  | `Rect`  | Emitted when resize ends                |
 | `activated`   | -       | Emitted when component becomes active   |
 | `deactivated` | -       | Emitted when component becomes inactive |
-| `collision`   | -       | Emitted when component collision occurs |
+| `collision`   | `Collision` | Emitted when component collision occurs |
 
 ### Rect Type
 
@@ -121,6 +121,18 @@ interface Rect {
   height: number
 }
 ```
+
+### Collision Type
+
+```typescript
+interface Collision {
+  boundary: 'left' | 'right' | 'top' | 'bottom'
+  overlap: number
+}
+```
+
+- `boundary`: The boundary direction where collision occurred
+- `overlap`: The collision overlap amount in pixels
 
 ## Collision Detection
 
