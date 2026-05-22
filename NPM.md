@@ -35,6 +35,10 @@ app.mount('#app')
 </template>
 ```
 
+## Important Notes
+
+The component uses `position: absolute` for positioning. For it to work correctly, the parent element must have a valid positioning property (NOT `static`). Set `position: relative`, `absolute`, `fixed`, or `sticky` on the parent element.
+
 ## Key Features
 
 - 🎯 Drag and drop with mouse and touch support

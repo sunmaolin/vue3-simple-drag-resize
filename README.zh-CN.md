@@ -65,6 +65,36 @@ import { DragResize } from 'vue3-simple-drag-resize'
 </template>
 ```
 
+## 使用注意事项
+
+组件使用 `position: absolute` 定位，为了正常工作，父元素必须设置有效的定位属性。
+
+⚠️ **父元素的 `position` 不能为 `static`（默认值）**
+
+请确保父元素设置了以下任一定位属性：
+- `position: relative`（推荐）
+- `position: absolute`
+- `position: fixed`
+- `position: sticky`
+
+```vue
+<template>
+  <!-- ✅ 正确：父元素设置了 position: relative -->
+  <div style="position: relative; width: 100%; height: 500px;">
+    <DragResize :x="100" :y="100">
+      <div>可以正常工作</div>
+    </DragResize>
+  </div>
+
+  <!-- ❌ 错误：父元素使用默认的 position: static -->
+  <div style="width: 100%; height: 500px;">
+    <DragResize :x="100" :y="100">
+      <div>定位将相对于更上层的定位元素</div>
+    </DragResize>
+  </div>
+</template>
+```
+
 ## 属性
 
 | 属性          | 类型                   | 默认值                                             | 描述                         |

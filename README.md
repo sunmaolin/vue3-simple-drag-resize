@@ -65,6 +65,36 @@ import { DragResize } from 'vue3-simple-drag-resize'
 </template>
 ```
 
+## Important Notes
+
+The component uses `position: absolute` for positioning. For it to work correctly, the parent element must have a valid positioning property.
+
+⚠️ **The parent element's `position` must NOT be `static` (the default value)**
+
+Make sure the parent element has one of the following positioning properties:
+- `position: relative` (recommended)
+- `position: absolute`
+- `position: fixed`
+- `position: sticky`
+
+```vue
+<template>
+  <!-- ✅ Correct: Parent has position: relative -->
+  <div style="position: relative; width: 100%; height: 500px;">
+    <DragResize :x="100" :y="100">
+      <div>Works correctly</div>
+    </DragResize>
+  </div>
+
+  <!-- ❌ Wrong: Parent uses default position: static -->
+  <div style="width: 100%; height: 500px;">
+    <DragResize :x="100" :y="100">
+      <div>Positioning will be relative to an ancestor element</div>
+    </DragResize>
+  </div>
+</template>
+```
+
 ## Props
 
 | Prop          | Type                   | Default                                            | Description                                |

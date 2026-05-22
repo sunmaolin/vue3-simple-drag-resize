@@ -149,6 +149,34 @@ const calcBeforeDrag = (pointerX: number, pointerY: number, isMove: boolean) => 
   limits = isMove ? calcMoveLimitation() : calcResizeLimition()
 }
 
+const isBeLimited = (newLeft: number, newRight: number, newTop: number, newBottom: number) => {
+  if (!limits || !props.isLimit) {
+    return false
+  }
+  return (
+    newLeft < limits.left.min ||
+    newRight < limits.right.min ||
+    newTop < limits.top.min ||
+    newBottom < limits.bottom.min ||
+    newLeft > limits.left.max ||
+    newRight > limits.right.max ||
+    newTop > limits.top.max ||
+    newBottom > limits.bottom.max
+  )
+}
+
+const rectCorrectionByLimits = (newLeft: number, newRight: number, newTop: number, newBottom: number) => {
+  if (!limits || !props.isLimit) {
+    return { newLeft, newRight, newTop, newBottom }
+  }
+  return {
+    newLeft: Math.min(Math.max(newLeft, limits.left.min), limits.left.max),
+    newRight: Math.min(Math.max(newRight, limits.right.min), limits.right.max),
+    newTop: Math.min(Math.max(newTop, limits.top.min), limits.top.max),
+    newBottom: Math.min(Math.max(newBottom, limits.bottom.min), limits.bottom.max)
+  }
+}
+
 const bodyDown = (event: MouseEvent | TouchEvent) => {
   event.stopPropagation()
   event.preventDefault()
@@ -201,6 +229,9 @@ const bodyMove = (offset: { x: number; y: number }) => {
     if (collision.boundary === 'bottom') {
       newTop += collision.overlap
       newBottom -= collision.overlap
+    }
+    if (isBeLimited(newLeft, newRight, newTop, newBottom)) {
+      return
     }
   }
 
@@ -282,18 +313,6 @@ const stickMove = (offset: { x: number; y: number }) => {
   bottom.value = newBottom
 
   emits('resizing', rect.value)
-}
-
-const rectCorrectionByLimits = (newLeft: number, newRight: number, newTop: number, newBottom: number) => {
-  if (!limits || !props.isLimit) {
-    return { newLeft, newRight, newTop, newBottom }
-  }
-  return {
-    newLeft: Math.min(Math.max(newLeft, limits.left.min), limits.left.max),
-    newRight: Math.min(Math.max(newRight, limits.right.min), limits.right.max),
-    newTop: Math.min(Math.max(newTop, limits.top.min), limits.top.max),
-    newBottom: Math.min(Math.max(newBottom, limits.bottom.min), limits.bottom.max)
-  }
 }
 
 const move = (event: MouseEvent | TouchEvent) => {
