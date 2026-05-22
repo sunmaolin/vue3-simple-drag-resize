@@ -10,6 +10,9 @@
 
 **GitHub 仓库**: [https://github.com/sunmaolin/vue3-simple-drag-resize](https://github.com/sunmaolin/vue3-simple-drag-resize)
 
+## 演示
+https://github.com/user-attachments/assets/d3e1d4a5-6c0b-4e22-b9d0-05c388a6c321
+
 ## 特性
 
 - 🎯 **拖拽功能** - 支持鼠标和触摸事件的流畅拖拽
