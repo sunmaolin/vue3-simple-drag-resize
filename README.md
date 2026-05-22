@@ -10,6 +10,12 @@ English | [简体中文](./README.zh-CN.md)
 
 **GitHub Repository**: [https://github.com/sunmaolin/vue3-simple-drag-resize](https://github.com/sunmaolin/vue3-simple-drag-resize)
 
+## Demo
+
+https://github.com/user-attachments/assets/d3e1d4a5-6c0b-4e22-b9d0-05c388a6c321
+
+
+
 ## Features
 
 - 🎯 **Drag and Drop** - Smooth drag support with mouse and touch events
