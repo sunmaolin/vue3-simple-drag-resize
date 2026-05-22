@@ -181,10 +181,12 @@ const bodyDown = (event: MouseEvent | TouchEvent) => {
   event.stopPropagation()
   event.preventDefault()
 
-  isActive.value = true
-
   if (props.isDraggable) {
     bodyDragging = true
+  }
+
+  if (props.isDraggable || props.isResizable) {
+    isActive.value = true
   }
 
   const pointerX = 'pageX' in event ? event.pageX : ((event as TouchEvent).touches[0]?.pageX ?? 0)
