@@ -14,8 +14,6 @@ English | [简体中文](./README.zh-CN.md)
 
 https://github.com/user-attachments/assets/d3e1d4a5-6c0b-4e22-b9d0-05c388a6c321
 
-
-
 ## Features
 
 - 🎯 **Drag and Drop** - Smooth drag support with mouse and touch events
@@ -78,6 +76,7 @@ The component uses `position: absolute` for positioning. For it to work correctl
 ⚠️ **The parent element's `position` must NOT be `static` (the default value)**
 
 Make sure the parent element has one of the following positioning properties:
+
 - `position: relative` (recommended)
 - `position: absolute`
 - `position: fixed`
@@ -120,6 +119,7 @@ Make sure the parent element has one of the following positioning properties:
 | `isResizable` | `boolean`              | `true`                                             | Enable/disable resizing                    |
 | `isDraggable` | `boolean`              | `true`                                             | Enable/disable dragging                    |
 | `axis`        | `'x' \| 'y' \| 'both'` | `'both'`                                           | Restrict drag direction                    |
+| `prefix`      | `string`               | -                                                  | Prefix for collision detection grouping    |
 
 ### Stick Types
 
@@ -136,15 +136,15 @@ Make sure the parent element has one of the following positioning properties:
 
 ## Events
 
-| Event         | Payload | Description                             |
-| ------------- | ------- | --------------------------------------- |
-| `clicked`     | -       | Emitted when component is clicked       |
-| `dragging`    | `Rect`  | Emitted during drag                     |
-| `dragstop`    | `Rect`  | Emitted when drag ends                  |
-| `resizing`    | `Rect`  | Emitted during resize                   |
-| `resizestop`  | `Rect`  | Emitted when resize ends                |
-| `activated`   | -       | Emitted when component becomes active   |
-| `deactivated` | -       | Emitted when component becomes inactive |
+| Event         | Payload     | Description                             |
+| ------------- | ----------- | --------------------------------------- |
+| `clicked`     | -           | Emitted when component is clicked       |
+| `dragging`    | `Rect`      | Emitted during drag                     |
+| `dragstop`    | `Rect`      | Emitted when drag ends                  |
+| `resizing`    | `Rect`      | Emitted during resize                   |
+| `resizestop`  | `Rect`      | Emitted when resize ends                |
+| `activated`   | -           | Emitted when component becomes active   |
+| `deactivated` | -           | Emitted when component becomes inactive |
 | `collision`   | `Collision` | Emitted when component collision occurs |
 
 ### Rect Type
@@ -288,6 +288,37 @@ app.use(createDragResize(), { isCollision: true })
     </DragResize>
     <DragResize :x="250" :y="50" :w="150" :h="150">
       <div>Component 2</div>
+    </DragResize>
+  </div>
+</template>
+```
+
+### Layer-based Collision Detection with Prefix
+
+Use the `prefix` prop to group components for collision detection. Only components with the same prefix will collide with each other, allowing you to create separate collision layers:
+
+```vue
+<template>
+  <div style="position: relative; width: 100%; height: 500px;">
+    <!-- Layer 1: Components with prefix="layer1" will only collide with each other -->
+    <DragResize prefix="layer1" :x="50" :y="50" :w="150" :h="150">
+      <div>Layer 1 - Component A</div>
+    </DragResize>
+    <DragResize prefix="layer1" :x="250" :y="50" :w="150" :h="150">
+      <div>Layer 1 - Component B</div>
+    </DragResize>
+
+    <!-- Layer 2: Components with prefix="layer2" will only collide with each other -->
+    <DragResize prefix="layer2" :x="50" :y="300" :w="150" :h="150">
+      <div>Layer 2 - Component A</div>
+    </DragResize>
+    <DragResize prefix="layer2" :x="250" :y="300" :w="150" :h="150">
+      <div>Layer 2 - Component B</div>
+    </DragResize>
+
+    <!-- No prefix: Components without prefix will collide with all other non-prefixed components -->
+    <DragResize :x="450" :y="50" :w="150" :h="150">
+      <div>Default Layer Component</div>
     </DragResize>
   </div>
 </template>

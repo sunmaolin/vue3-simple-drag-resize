@@ -66,6 +66,7 @@ const dragResizeRef = useTemplateRef('drag-resize')
 const dragResizeContainerRef = useTemplateRef('drag-resize-container')
 
 const uid = useId()
+const componentId = computed(() => (props.prefix ? `${props.prefix}_${uid}` : uid))
 const dragResizeManager = inject('dragResizeManager') as DragResizeManager
 
 onMounted(() => {
@@ -73,7 +74,7 @@ onMounted(() => {
   maxWidth.value ||= parentElement.clientWidth
   maxHeight.value ||= parentElement.clientHeight
 
-  dragResizeManager.register(uid, dragResizeRef)
+  dragResizeManager.register(componentId.value, dragResizeRef)
 
   const containerElement = dragResizeContainerRef.value as HTMLElement
   right.value = maxWidth.value - (props.w ?? containerElement.scrollWidth) - left.value
@@ -213,7 +214,12 @@ const bodyMove = (offset: { x: number; y: number }) => {
 
   ;({ newLeft, newRight, newTop, newBottom } = rectCorrectionByLimits(newLeft, newRight, newTop, newBottom))
 
-  const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
+  const collision = dragResizeManager.willCollide(componentId.value, {
+    left: newLeft,
+    top: newTop,
+    right: newRight,
+    bottom: newBottom
+  })
   if (collision) {
     emits('collision', collision)
     if (collision.boundary === 'left') {
@@ -292,7 +298,12 @@ const stickMove = (offset: { x: number; y: number }) => {
 
   ;({ newLeft, newRight, newTop, newBottom } = rectCorrectionByLimits(newLeft, newRight, newTop, newBottom))
 
-  const collision = dragResizeManager.willCollide(uid, { left: newLeft, top: newTop, right: newRight, bottom: newBottom })
+  const collision = dragResizeManager.willCollide(componentId.value, {
+    left: newLeft,
+    top: newTop,
+    right: newRight,
+    bottom: newBottom
+  })
   if (collision) {
     emits('collision', collision)
     if (collision.boundary === 'left') {
@@ -382,7 +393,7 @@ onMounted(() => {
 
   onBeforeUnmount(() => {
     removeEvents(domEvents)
-    dragResizeManager.unregister(uid)
+    dragResizeManager.unregister(componentId.value)
   })
 })
 

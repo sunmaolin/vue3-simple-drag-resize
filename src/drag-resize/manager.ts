@@ -23,11 +23,11 @@ export class DragResizeManager {
   }
 
   getOtherComponents(currentId: string): TemplateRef<HTMLDivElement>[] {
+    const prefix = currentId.includes('_') ? currentId.split('_')[0]! : ''
     const others: TemplateRef<HTMLDivElement>[] = []
     this.components.forEach((rectRef, id) => {
-      if (id !== currentId) {
-        others.push(rectRef)
-      }
+      if (prefix.length > 0 && id.startsWith(prefix) && id !== currentId) others.push(rectRef)
+      if (prefix.length === 0 && id !== currentId) others.push(rectRef)
     })
     return others
   }
@@ -38,6 +38,7 @@ export class DragResizeManager {
 
   willCollide(currentId: string, newRect: ClientRect): Collision | null {
     if (!this.isCollision) return null
+
     const currentComponent = this.getCurrentComponent(currentId)
     if (!currentComponent?.value) return null
 
@@ -56,11 +57,11 @@ export class DragResizeManager {
       if (!other.value) continue
       const otherRect = other.value.getBoundingClientRect()
       if (this.checkCollision(newViewportRect, otherRect)) {
-        const overlapLeft = newViewportRect.right - otherRect.left;    
-        const overlapRight = otherRect.right - newViewportRect.left;   
-        const overlapTop = newViewportRect.bottom - otherRect.top;     
-        const overlapBottom = otherRect.bottom - newViewportRect.top;
-        const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+        const overlapLeft = newViewportRect.right - otherRect.left
+        const overlapRight = otherRect.right - newViewportRect.left
+        const overlapTop = newViewportRect.bottom - otherRect.top
+        const overlapBottom = otherRect.bottom - newViewportRect.top
+        const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom)
         if (minOverlap === overlapLeft) {
           return {
             boundary: 'left',

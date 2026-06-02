@@ -25,7 +25,7 @@ export type DragLimitation = {
 export type Collision = {
   boundary: 'left' | 'right' | 'top' | 'bottom'
   overlap: number
-} 
+}
 export type Rect = {
   left: number
   top: number
@@ -49,4 +49,5 @@ export interface DragResizeProps {
   isResizable?: boolean
   isDraggable?: boolean
   axis?: Axis
+  prefix?: string
 }

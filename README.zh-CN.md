@@ -11,6 +11,7 @@
 **GitHub 仓库**: [https://github.com/sunmaolin/vue3-simple-drag-resize](https://github.com/sunmaolin/vue3-simple-drag-resize)
 
 ## 演示
+
 https://github.com/user-attachments/assets/d3e1d4a5-6c0b-4e22-b9d0-05c388a6c321
 
 ## 特性
@@ -75,6 +76,7 @@ import { DragResize } from 'vue3-simple-drag-resize'
 ⚠️ **父元素的 `position` 不能为 `static`（默认值）**
 
 请确保父元素设置了以下任一定位属性：
+
 - `position: relative`（推荐）
 - `position: absolute`
 - `position: fixed`
@@ -117,6 +119,7 @@ import { DragResize } from 'vue3-simple-drag-resize'
 | `isResizable` | `boolean`              | `true`                                             | 启用/禁用缩放                |
 | `isDraggable` | `boolean`              | `true`                                             | 启用/禁用拖拽                |
 | `axis`        | `'x' \| 'y' \| 'both'` | `'both'`                                           | 限制拖拽方向                 |
+| `prefix`      | `string`               | -                                                  | 碰撞检测分组前缀             |
 
 ### 手柄类型
 
@@ -133,15 +136,15 @@ import { DragResize } from 'vue3-simple-drag-resize'
 
 ## 事件
 
-| 事件          | 参数   | 描述               |
-| ------------- | ------ | ------------------ |
-| `clicked`     | -      | 组件被点击时触发   |
-| `dragging`    | `Rect` | 拖拽过程中触发     |
-| `dragstop`    | `Rect` | 拖拽结束时触发     |
-| `resizing`    | `Rect` | 缩放过程中触发     |
-| `resizestop`  | `Rect` | 缩放结束时触发     |
-| `activated`   | -      | 组件激活时触发     |
-| `deactivated` | -      | 组件失活时触发     |
+| 事件          | 参数        | 描述               |
+| ------------- | ----------- | ------------------ |
+| `clicked`     | -           | 组件被点击时触发   |
+| `dragging`    | `Rect`      | 拖拽过程中触发     |
+| `dragstop`    | `Rect`      | 拖拽结束时触发     |
+| `resizing`    | `Rect`      | 缩放过程中触发     |
+| `resizestop`  | `Rect`      | 缩放结束时触发     |
+| `activated`   | -           | 组件激活时触发     |
+| `deactivated` | -           | 组件失活时触发     |
 | `collision`   | `Collision` | 组件发生碰撞时触发 |
 
 ### Rect 类型
@@ -285,6 +288,37 @@ app.use(createDragResize(), { isCollision: true })
     </DragResize>
     <DragResize :x="250" :y="50" :w="150" :h="150">
       <div>组件 2</div>
+    </DragResize>
+  </div>
+</template>
+```
+
+### 基于 prefix 的分层碰撞检测
+
+使用 `prefix` 属性可以对组件进行分组碰撞检测。只有相同 prefix 的组件才会互相碰撞，从而实现不同碰撞层的分离：
+
+```vue
+<template>
+  <div style="position: relative; width: 100%; height: 500px;">
+    <!-- 层 1：prefix="layer1" 的组件只会与同层组件碰撞 -->
+    <DragResize prefix="layer1" :x="50" :y="50" :w="150" :h="150">
+      <div>层 1 - 组件 A</div>
+    </DragResize>
+    <DragResize prefix="layer1" :x="250" :y="50" :w="150" :h="150">
+      <div>层 1 - 组件 B</div>
+    </DragResize>
+
+    <!-- 层 2：prefix="layer2" 的组件只会与同层组件碰撞 -->
+    <DragResize prefix="layer2" :x="50" :y="300" :w="150" :h="150">
+      <div>层 2 - 组件 A</div>
+    </DragResize>
+    <DragResize prefix="layer2" :x="250" :y="300" :w="150" :h="150">
+      <div>层 2 - 组件 B</div>
+    </DragResize>
+
+    <!-- 无 prefix：没有 prefix 的组件会与所有其他无 prefix 的组件碰撞 -->
+    <DragResize :x="450" :y="50" :w="150" :h="150">
+      <div>默认层组件</div>
     </DragResize>
   </div>
 </template>
